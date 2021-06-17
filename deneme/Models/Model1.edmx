@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="kategoriler">
+          <Key>
+            <PropertyRef Name="katId" />
+          </Key>
+          <Property Name="katId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="katAdı" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sepet">
+          <Key>
+            <PropertyRef Name="sepetId" />
+          </Key>
+          <Property Name="sepetId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sepetUyeId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="sepetUrunId" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="urunId" />
+          </Key>
+          <Property Name="urunId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="urunAdı" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="urunFiyatı" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="urunKatId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="uyeler">
+          <Key>
+            <PropertyRef Name="uyeId" />
+          </Key>
+          <Property Name="uyeId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="uyeKullaniciAdi" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="uyeMail" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="uyeParola" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="uyeAdSoyad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="uyeAdmin" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_sepet_Tourunler">
+          <End Role="urunler" Type="Self.urunler" Multiplicity="1" />
+          <End Role="sepet" Type="Self.sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="urunler">
+              <PropertyRef Name="urunId" />
+            </Principal>
+            <Dependent Role="sepet">
+              <PropertyRef Name="sepetUrunId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sepet_Touyeler">
+          <End Role="uyeler" Type="Self.uyeler" Multiplicity="1" />
+          <End Role="sepet" Type="Self.sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uyeler">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="sepet">
+              <PropertyRef Name="sepetUyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_urunler_Tokategoriler">
+          <End Role="kategoriler" Type="Self.kategoriler" Multiplicity="1" />
+          <End Role="urunler" Type="Self.urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kategoriler">
+              <PropertyRef Name="katId" />
+            </Principal>
+            <Dependent Role="urunler">
+              <PropertyRef Name="urunKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1ModelStoreContainer">
+          <EntitySet Name="kategoriler" EntityType="Self.kategoriler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sepet" EntityType="Self.sepet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="urunler" EntityType="Self.urunler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="uyeler" EntityType="Self.uyeler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_sepet_Tourunler" Association="Self.FK_sepet_Tourunler">
+            <End Role="urunler" EntitySet="urunler" />
+            <End Role="sepet" EntitySet="sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sepet_Touyeler" Association="Self.FK_sepet_Touyeler">
+            <End Role="uyeler" EntitySet="uyeler" />
+            <End Role="sepet" EntitySet="sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_urunler_Tokategoriler" Association="Self.FK_urunler_Tokategoriler">
+            <End Role="kategoriler" EntitySet="kategoriler" />
+            <End Role="urunler" EntitySet="urunler" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="kategoriler">
+          <Key>
+            <PropertyRef Name="katId" />
+          </Key>
+          <Property Name="katId" Type="Int32" Nullable="false" />
+          <Property Name="katAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="urunler" Relationship="Self.FK_urunler_Tokategoriler" FromRole="kategoriler" ToRole="urunler" />
+        </EntityType>
+        <EntityType Name="sepet">
+          <Key>
+            <PropertyRef Name="sepetId" />
+          </Key>
+          <Property Name="sepetId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sepetUyeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="sepetUrunId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="urunler" Relationship="Self.FK_sepet_Tourunler" FromRole="sepet" ToRole="urunler" />
+          <NavigationProperty Name="uyeler" Relationship="Self.FK_sepet_Touyeler" FromRole="sepet" ToRole="uyeler" />
+        </EntityType>
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="urunId" />
+          </Key>
+          <Property Name="urunId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="urunAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="urunFiyatı" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="urunKatId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="kategoriler" Relationship="Self.FK_urunler_Tokategoriler" FromRole="urunler" ToRole="kategoriler" />
+          <NavigationProperty Name="sepet" Relationship="Self.FK_sepet_Tourunler" FromRole="urunler" ToRole="sepet" />
+        </EntityType>
+        <EntityType Name="uyeler">
+          <Key>
+            <PropertyRef Name="uyeId" />
+          </Key>
+          <Property Name="uyeId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="sepet" Relationship="Self.FK_sepet_Touyeler" FromRole="uyeler" ToRole="sepet" />
+          <Property Name="uyeAdSoyad" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeMail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeParola" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeKullaniciAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="uyeAdmin" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_urunler_Tokategoriler">
+          <End Role="kategoriler" Type="Self.kategoriler" Multiplicity="1" />
+          <End Role="urunler" Type="Self.urunler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kategoriler">
+              <PropertyRef Name="katId" />
+            </Principal>
+            <Dependent Role="urunler">
+              <PropertyRef Name="urunKatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sepet_Tourunler">
+          <End Role="urunler" Type="Self.urunler" Multiplicity="1" />
+          <End Role="sepet" Type="Self.sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="urunler">
+              <PropertyRef Name="urunId" />
+            </Principal>
+            <Dependent Role="sepet">
+              <PropertyRef Name="sepetUrunId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sepet_Touyeler">
+          <End Role="uyeler" Type="Self.uyeler" Multiplicity="1" />
+          <End Role="sepet" Type="Self.sepet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="uyeler">
+              <PropertyRef Name="uyeId" />
+            </Principal>
+            <Dependent Role="sepet">
+              <PropertyRef Name="sepetUyeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="kategoriler" EntityType="Self.kategoriler" />
+          <EntitySet Name="sepet" EntityType="Self.sepet" />
+          <EntitySet Name="urunler" EntityType="Self.urunler" />
+          <EntitySet Name="uyeler" EntityType="Self.uyeler" />
+          <AssociationSet Name="FK_urunler_Tokategoriler" Association="Self.FK_urunler_Tokategoriler">
+            <End Role="kategoriler" EntitySet="kategoriler" />
+            <End Role="urunler" EntitySet="urunler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sepet_Tourunler" Association="Self.FK_sepet_Tourunler">
+            <End Role="urunler" EntitySet="urunler" />
+            <End Role="sepet" EntitySet="sepet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sepet_Touyeler" Association="Self.FK_sepet_Touyeler">
+            <End Role="uyeler" EntitySet="uyeler" />
+            <End Role="sepet" EntitySet="sepet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
+          <EntitySetMapping Name="kategoriler">
+            <EntityTypeMapping TypeName="Database1Model.kategoriler">
+              <MappingFragment StoreEntitySet="kategoriler">
+                <ScalarProperty Name="katId" ColumnName="katId" />
+                <ScalarProperty Name="katAdı" ColumnName="katAdı" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sepet">
+            <EntityTypeMapping TypeName="Database1Model.sepet">
+              <MappingFragment StoreEntitySet="sepet">
+                <ScalarProperty Name="sepetId" ColumnName="sepetId" />
+                <ScalarProperty Name="sepetUyeId" ColumnName="sepetUyeId" />
+                <ScalarProperty Name="sepetUrunId" ColumnName="sepetUrunId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="urunler">
+            <EntityTypeMapping TypeName="Database1Model.urunler">
+              <MappingFragment StoreEntitySet="urunler">
+                <ScalarProperty Name="urunId" ColumnName="urunId" />
+                <ScalarProperty Name="urunAdı" ColumnName="urunAdı" />
+                <ScalarProperty Name="urunFiyatı" ColumnName="urunFiyatı" />
+                <ScalarProperty Name="urunKatId" ColumnName="urunKatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="uyeler">
+            <EntityTypeMapping TypeName="Database1Model.uyeler">
+              <MappingFragment StoreEntitySet="uyeler">
+                <ScalarProperty Name="uyeAdmin" ColumnName="uyeAdmin" />
+                <ScalarProperty Name="uyeKullaniciAdi" ColumnName="uyeKullaniciAdi" />
+                <ScalarProperty Name="uyeParola" ColumnName="uyeParola" />
+                <ScalarProperty Name="uyeMail" ColumnName="uyeMail" />
+                <ScalarProperty Name="uyeAdSoyad" ColumnName="uyeAdSoyad" />
+                <ScalarProperty Name="uyeId" ColumnName="uyeId" />
+                </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
